@@ -1,0 +1,17 @@
+{
+    "serverlessConsole.services": [
+        {
+            "type": "cloudformation",
+            "title": "scheduler",
+            "timeOffsetInMs": 0,
+            "awsProfile": "personal",
+            "stacks": [
+                {
+                    "region": "eu-west-1",
+                    "stackName": "dev-scheduler-my-stack",
+                    "stage": "dev"
+                }
+            ]
+        }
+    ]
+}
