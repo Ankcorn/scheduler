@@ -10,7 +10,7 @@ const dynamodb = new DocumentClient()
 
 const send = async () => {
 
-  const eventTime = createTimePartition(new Date()) + 2;
+  const eventTime = createTimePartition(new Date().toString()) + 2;
   console.log(eventTime)
 
   const scheduledEvents = await dynamodb.query({
