@@ -15,19 +15,24 @@ interface Item {
 
 export const handler: SQSHandler = async (event) => {
   for(const record of event.Records) {
-    const data: Item = JSON.parse(record.body);
-    const response = await http.post({
-      url: data.destination,
-      data: data.data
-    })
-    await dynamodb.update({
-      TableName: process.env.TABLE_NAME,
-      Key: { pk: data.pk, sk: data.sk },
-      UpdateExpression: 'set complete = :c, destinationResponse = :r',
-      ExpressionAttributeValues: {
-        ":c": true,
-        ":r": response.body
-      }
-    }).promise()
+    try {
+      const data: Item = JSON.parse(record.body);
+      const response = await http.post({
+        url: data.destination,
+        data: data.data
+      })
+      await dynamodb.update({
+        TableName: process.env.TABLE_NAME,
+        Key: { pk: data.pk, sk: data.sk },
+        UpdateExpression: 'set complete = :c, destinationResponse = :r',
+        ExpressionAttributeValues: {
+          ":c": true,
+          ":r": response.body
+        }
+      }).promise()
+    } catch (e) {
+      console.log(e)
+    }
+    
   }
 };
